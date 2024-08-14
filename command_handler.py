@@ -1,62 +1,7 @@
 from colorama import Fore, Back, Style
-from typing import Callable
-from functools import wraps
 from address_book import AddressBook, Record
-from file_storage import load_data, save_data
-
-
-def input_error(func: Callable):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-
-        # print(func.__name__)
-        try:
-            return func(*args, **kwargs)
-        except KeyError as e:
-            # return format_error('Invalid command.')
-            return format_error(f'Invalid command. [KeyError {e}]')
-        except ValueError as e:
-            return format_error(f'Enter the argument for the command [ValueError {e}]')
-        except IndexError as e:
-            return format_error(f'Enter the argument for the command [IndexError {e}]')
-        except TypeError as e:
-            return format_error(f'Enter the argument for the command [TypeError {e}]')
-
-    return wrapper
-
-
-@input_error
-def parse_command(input_sting: str):
-    command, *arguments = input_sting.split()
-    if len(arguments) > 2:
-        last_arg = arguments.pop()
-        return [command, ' '.join(arguments), last_arg]
-
-    return command, *arguments
-
-
-def main():
-    try:
-        contacts = load_data()
-    except FileNotFoundError as e:
-        contacts = AddressBook()
-
-    print(hello_handler())
-    print(help_handler())
-    try:
-        while True:
-            command, *arguments = parse_command(input('>>'))
-
-            if command in ['exit', 'close']:
-                save_data(contacts)
-                print(format_success('Good bye!'))
-                break
-
-            print(contacts_handlers(command, contacts, *arguments))
-
-    except KeyboardInterrupt:
-        save_data(contacts)
-        print(format_success('\nGood bye!'))
+from error_decorator import input_error
+from output_formatter import format_success, format_error
 
 
 @input_error
@@ -155,13 +100,8 @@ def get_all_birthdays_handler(contacts: AddressBook, *args):
     return '\n'.join(map(lambda name: f'{name}: {contacts[name].birthday}', contacts.keys()))
 
 
-def format_error(error: str):
-    return f'{Fore.LIGHTWHITE_EX}{Back.RED}{error}{Style.RESET_ALL}'
 
 
-def format_success(message: str):
-    return f'{Fore.GREEN}{message}{Style.RESET_ALL}'
 
 
-if __name__ == '__main__':
-    main()
+
