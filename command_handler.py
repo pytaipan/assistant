@@ -13,6 +13,7 @@ def contacts_handlers(command, contacts, *arguments):
 
     handlers_map = {
         'add': add_contact_handler,
+        'add-email': add_email_handler,
         'change': change_contact_handler,
         'phone': get_contact_handler,
         'all': get_all_contacts_handler,
@@ -36,6 +37,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}help{Style.RESET_ALL} - prints list of available commands
 {Fore.LIGHTWHITE_EX}{Back.BLUE}hello{Style.RESET_ALL} - prints a greeting 
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add [name] [phone number]{Style.RESET_ALL} - create a contact with a phone number
+{Fore.LIGHTWHITE_EX}{Back.BLUE}add-email [name] [email] [is_primary]{Style.RESET_ALL} - Add or change email in contact, or create new contact with email if not exists
 {Fore.LIGHTWHITE_EX}{Back.BLUE}change [name] [phone number]{Style.RESET_ALL} - changes a contact phone number 
 {Fore.LIGHTWHITE_EX}{Back.BLUE}phone [name]{Style.RESET_ALL} - prints contacts phone number
 {Fore.LIGHTWHITE_EX}{Back.BLUE}all{Style.RESET_ALL} - prints all contacts
@@ -50,13 +52,33 @@ def help_handler():
 def add_contact_handler(contacts: AddressBook, name: str, phone: str):
     name = name.lower().capitalize()
 
-    record = contacts.find(name)
-    if record is None:
+    try:
+        record = contacts.find(name)
+    except ValueError:
         record = Record(name)
+
     record.add_phone(phone)
     contacts[name] = record
 
     return format_success('Contact added')
+
+
+@input_error
+def add_email_handler(contacts: AddressBook, name: str, email: str, is_primary: str):
+    name = name.lower().capitalize()
+    is_primary = is_primary.lower()
+    primary = False
+    if is_primary == "true":
+        primary = True
+
+    record = contacts.find(name)
+    if record is None:
+        record = Record(name)
+
+    record.add_email(email, primary)
+    contacts[name] = record
+
+    return format_success('Email added')
 
 
 @input_error

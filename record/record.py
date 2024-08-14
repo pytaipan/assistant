@@ -1,4 +1,5 @@
 from record.birthday import Birthday
+from record.email import Email
 from record.name import Name
 from record.phone import Phone
 
@@ -8,6 +9,7 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.birthday = None
+        self.emails = []
 
     def add_phone(self, phone: str):
         for p in self.phones:
@@ -15,6 +17,19 @@ class Record:
                 return
 
         self.phones.append(Phone(phone))
+
+    def add_email(self, email: str, is_primary: bool):
+        # if new is primary set all existed emails as secondary
+        if is_primary:
+            for e in self.emails:
+                e.primary = False
+
+        for e in self.emails:
+            if e.value == email:
+                e.primary = is_primary
+                return
+
+        self.emails.append(Email(email, is_primary))
 
     def add_birthday(self, birthday: str):
         self.birthday = Birthday(birthday)
@@ -40,4 +55,8 @@ class Record:
         raise ValueError(f'Phone number {phone} does not belong record {self.name}')
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+        return (
+            f"Contact name: {self.name.value}, "
+            f"phones: {'; '.join(p.value for p in self.phones)}, "
+            f"emails: {'; '.join(str(e) for e in self.emails)}"
+        )
