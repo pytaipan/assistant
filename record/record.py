@@ -10,6 +10,10 @@ class Record:
         self.birthday = None
 
     def add_phone(self, phone: str):
+        for p in self.phones:
+            if p.value == phone:
+                return
+
         self.phones.append(Phone(phone))
 
     def add_birthday(self, birthday: str):
