@@ -8,9 +8,9 @@ from output_formatter import format_success
 @input_error
 def parse_command(input_sting: str):
     command, *arguments = input_sting.split()
-    if len(arguments) > 2:
-        last_arg = arguments.pop()
-        return [command, ' '.join(arguments), last_arg]
+    # if len(arguments) > 2:
+    #     last_arg = arguments.pop()
+    #     return [command, ' '.join(arguments), last_arg]
 
     return command, *arguments
 
