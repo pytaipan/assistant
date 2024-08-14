@@ -49,9 +49,13 @@ def help_handler():
 @input_error
 def add_contact_handler(contacts: AddressBook, name: str, phone: str):
     name = name.lower().capitalize()
-    record = Record(name)
+
+    record = contacts.find(name)
+    if record is None:
+        record = Record(name)
     record.add_phone(phone)
     contacts[name] = record
+
     return format_success('Contact added')
 
 
@@ -98,10 +102,3 @@ def get_birthday_handler(contacts: AddressBook, name: str, *args):
 
 def get_all_birthdays_handler(contacts: AddressBook, *args):
     return '\n'.join(map(lambda name: f'{name}: {contacts[name].birthday}', contacts.keys()))
-
-
-
-
-
-
-
