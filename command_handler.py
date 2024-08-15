@@ -6,7 +6,7 @@ from output_formatter import format_success, format_error
 
 
 @input_error
-def contacts_handlers(command, books, *arguments):
+def command_handlers(command, books, *arguments):
     no_args_handlers_map = {
         'hello': hello_handler,
         'help': help_handler,
