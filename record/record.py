@@ -1,3 +1,4 @@
+from record.address import Address
 from record.birthday import Birthday
 from record.email import Email
 from record.name import Name
@@ -10,6 +11,7 @@ class Record:
         self.phones = []
         self.birthday = None
         self.emails = []
+        self.address = None
 
     def add_phone(self, phone: str):
         for p in self.phones:
@@ -17,6 +19,9 @@ class Record:
                 return
 
         self.phones.append(Phone(phone))
+
+    def set_address(self, address: str):
+        self.address = Address(address)
 
     def add_email(self, email: str, is_primary: bool):
         if not self.__can_update_primary_email(email, is_primary):
@@ -96,9 +101,19 @@ class Record:
 
         raise ValueError(f'Phone number {phone} does not belong record {self.name}')
 
-    def __str__(self):
-        return (
+    def __str__(self) -> str:
+        result_str = (
             f"Contact name: {self.name.value}, "
-            f"phones: {'; '.join(p.value for p in self.phones)}, "
-            f"emails: {'; '.join(str(e) for e in self.emails)}"
+            f"phones: {'; '.join(p.value for p in self.phones)}"
         )
+
+        if len(self.emails) > 0:
+            result_str = result_str + f", emails: {'; '.join(str(e) for e in self.emails)}"
+
+        if self.address is not None:
+            result_str = result_str + f", address: {self.address.value}"
+
+        if self.birthday is not None:
+            result_str = result_str + f", birthday: {self.birthday}"
+
+        return result_str
