@@ -59,6 +59,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}notes{Style.RESET_ALL} - prints all notes
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-note [text note]{Style.RESET_ALL} - adds a new note and prints it's ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}edit-note [ID] [text note]{Style.RESET_ALL} - updates note with given ID
+{Fore.LIGHTWHITE_EX}{Back.BLUE}delete-note [ID]{Style.RESET_ALL} - removes note with given ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}close{Style.RESET_ALL} або {Fore.YELLOW}{Back.BLUE}exit{Style.RESET_ALL} - terminates a program
     '''
 
@@ -118,24 +119,24 @@ def get_all_birthdays_handler(contacts: AddressBook, *args):
 
 
 def get_all_notes_handler(notes: Notebook, *args):
-    return format_success('\n'.join(map(lambda note: f'ID[{notes.index(note)}] Note: "{note}"', notes)))
+    return format_success('\n'.join(map(lambda note_id: f'ID[{note_id}] Note: "{notes[note_id]}"', notes.keys())))
 
 def add_note_handler(notes: Notebook, *args):
-    return format_success(f'Note add with ID: {notes.add_note(' '.join(args))}')
+    return format_success(f'Note added with ID: {notes.add_note(' '.join(args))}')
 
 
-def edit_note_handler(notes: Notebook, id: str, *args):
+def edit_note_handler(notes: Notebook, note_id: str, *args):
     try:
-        note = notes.get_note(int(id))
+        note = notes.get_note(note_id)
         note.edit(' '.join(args))
     except IndexError:
         return format_error('Note not found.')
 
-    return format_success(f'Note #{id} updated')
+    return format_success(f'Note #{note_id} updated')
 
-def delete_note_handler(notes: Notebook, id: str, *args):
+def delete_note_handler(notes: Notebook, note_id: str, *args):
     try:
-        notes.delete_note(int(id))
-        return format_success(f'Note #{id} deleted')
+        notes.delete_note(note_id)
+        return format_success(f'Note #{note_id} deleted')
     except IndexError:
         return format_error('Note not found.')
