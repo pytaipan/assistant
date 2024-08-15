@@ -28,15 +28,15 @@ def main():
             command, *arguments = parse_command(input('>>'))
 
             if command in ['exit', 'close']:
-                save_data(contacts)
                 print(format_success('Good bye!'))
                 break
 
             print(contacts_handlers(command, contacts, *arguments))
 
     except KeyboardInterrupt:
-        save_data(contacts)
         print(format_success('\nGood bye!'))
+    finally:
+        save_data(contacts)
 
 
 if __name__ == '__main__':
