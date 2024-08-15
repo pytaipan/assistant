@@ -56,7 +56,6 @@ class Engine(UserDict):
         ng = ngram.NGram(keys, N=2)
         for value, weight in ng.search(search_string):
             if weight < self.__search_threshold:
-                print(value, weight)
                 continue
 
             for entity_id in self.__index[value]:
