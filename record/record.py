@@ -19,17 +19,59 @@ class Record:
         self.phones.append(Phone(phone))
 
     def add_email(self, email: str, is_primary: bool):
+        if not self.__can_update_primary_email(email, is_primary):
+            raise ValueError("If a contact has an email address, there must be one primary email address")
+
         # if new is primary set all existed emails as secondary
         if is_primary:
-            for e in self.emails:
-                e.primary = False
+            self.__set_all_emails_as_secondary()
 
+        # if email already there is - update primary status
         for e in self.emails:
             if e.value == email:
                 e.primary = is_primary
+
                 return
 
+        if len(self.emails) == 0:
+            is_primary = True
+
         self.emails.append(Email(email, is_primary))
+
+    def change_email(self, old_email: str, new_email: str, is_primary: bool):
+        if not self.__can_update_primary_email(old_email, is_primary):
+            raise ValueError("If a contact has an email address, there must be one primary email address")
+
+        email = self.find_email(old_email)
+
+        # if new is primary set all existed emails as secondary
+        if is_primary:
+            self.__set_all_emails_as_secondary()
+
+        email.value = new_email
+        email.primary = is_primary
+
+    def __can_update_primary_email(self, email_for_update: str, new_primary_val: bool) -> bool:
+        if new_primary_val:
+            return True
+
+        # We can`t change primary to not primary, because primary mail is required
+        for e in self.emails:
+            if e.value == email_for_update and e.primary:
+                return False
+
+        return True
+
+    def __set_all_emails_as_secondary(self):
+        for e in self.emails:
+            e.primary = False
+
+    def find_email(self, email: str) -> Email:
+        for e in self.emails:
+            if e.value == email:
+                return e
+
+        raise ValueError(f'Email {email} does not belong record {self.name}')
 
     def add_birthday(self, birthday: str):
         self.birthday = Birthday(birthday)

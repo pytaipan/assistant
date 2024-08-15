@@ -14,7 +14,8 @@ def contacts_handlers(command, contacts, *arguments):
     handlers_map = {
         'add': add_contact_handler,
         'add-email': add_email_handler,
-        'change': change_contact_handler,
+        'change-email': change_email_handler,
+        'change': change_phone_handler,
         'phone': get_contact_handler,
         'all': get_all_contacts_handler,
         'add-birthday': add_birthday_handler,
@@ -38,6 +39,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}hello{Style.RESET_ALL} - prints a greeting 
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add [name] [phone number]{Style.RESET_ALL} - create a contact with a phone number
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-email [name] [email] [is_primary]{Style.RESET_ALL} - Add or change email in contact, or create new contact with email if not exists
+{Fore.LIGHTWHITE_EX}{Back.BLUE}change-email [name] [old_email_value] [new_email_value] [is_primary]{Style.RESET_ALL} - Add or change email in contact, or create new contact with email if not exists
 {Fore.LIGHTWHITE_EX}{Back.BLUE}change [name] [phone number]{Style.RESET_ALL} - changes a contact phone number 
 {Fore.LIGHTWHITE_EX}{Back.BLUE}phone [name]{Style.RESET_ALL} - prints contacts phone number
 {Fore.LIGHTWHITE_EX}{Back.BLUE}all{Style.RESET_ALL} - prints all contacts
@@ -64,12 +66,9 @@ def add_contact_handler(contacts: AddressBook, name: str, phone: str):
 
 
 @input_error
-def add_email_handler(contacts: AddressBook, name: str, email: str, is_primary: str):
+def add_email_handler(contacts: AddressBook, name: str, email: str, is_primary: str = "False"):
     name = name.lower().capitalize()
-    is_primary = is_primary.lower()
-    primary = False
-    if is_primary == "true":
-        primary = True
+    primary = parser_bool_from_str(is_primary)
 
     record = contacts.find(name)
     if record is None:
@@ -82,7 +81,7 @@ def add_email_handler(contacts: AddressBook, name: str, email: str, is_primary: 
 
 
 @input_error
-def change_contact_handler(contacts: AddressBook, name: str, phone: str):
+def change_phone_handler(contacts: AddressBook, name: str, phone: str):
     name = name.lower().capitalize()
     try:
         record = contacts.find(name)
@@ -91,6 +90,20 @@ def change_contact_handler(contacts: AddressBook, name: str, phone: str):
         return format_success('Contact updated.')
     except ValueError:
         return format_error('Contact not found.')
+
+
+@input_error
+def change_email_handler(contacts: AddressBook, name: str, old_email: str, new_email: str, is_primary: str):
+    name = name.lower().capitalize()
+    primary = parser_bool_from_str(is_primary)
+
+    try:
+        record = contacts.find(name)
+        record.change_email(old_email, new_email, primary)
+
+        return format_success('Email updated.')
+    except ValueError as error:
+        return format_error(error)
 
 
 @input_error
@@ -124,3 +137,6 @@ def get_birthday_handler(contacts: AddressBook, name: str, *args):
 
 def get_all_birthdays_handler(contacts: AddressBook, *args):
     return '\n'.join(map(lambda name: f'{name}: {contacts[name].birthday}', contacts.keys()))
+
+def parser_bool_from_str(val: str) -> bool:
+    return val.lower() == 'true'

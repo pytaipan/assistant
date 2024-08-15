@@ -4,7 +4,7 @@ from record.field import Field
 
 
 class Email(Field):
-    # реалізація класу
+
     def __init__(self, value: str, primary: bool):
         if not match(r'^.+@.+\..+$', value):
             raise ValueError(
