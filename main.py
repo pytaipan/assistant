@@ -1,5 +1,5 @@
-from address_book import AddressBook
-from command_handler import hello_handler, help_handler, contacts_handlers
+from assistant.assistant import Assistant
+from command_handler import hello_handler, help_handler, command_handlers
 from error_decorator import input_error
 from file_storage import load_data, save_data
 from output_formatter import format_success
@@ -16,9 +16,9 @@ def parse_command(input_sting: str):
 
 def main():
     try:
-        contacts = load_data()
+        assistant = load_data()
     except FileNotFoundError:
-        contacts = AddressBook()
+        assistant = Assistant()
 
     print(hello_handler())
     print(help_handler())
@@ -30,7 +30,7 @@ def main():
     command_completer = WordCompleter(commands, ignore_case=True)
 
     try:
-        while True:            
+        while True:
             user_input = prompt('>> ', completer=command_completer)
             command, *arguments = parse_command(user_input)
 
@@ -38,12 +38,12 @@ def main():
                 print(format_success('Good bye!'))
                 break
 
-            print(contacts_handlers(command, contacts, *arguments))
+            print(command_handlers(command, assistant, *arguments))
 
     except KeyboardInterrupt:
         print(format_success('\nGood bye!'))
     finally:
-        save_data(contacts)
+        save_data(assistant)
 
 if __name__ == '__main__':
     main()
