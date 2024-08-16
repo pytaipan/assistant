@@ -1,4 +1,4 @@
-from books.books import Books
+from assistant.assistant import Assistant
 from command_handler import hello_handler, help_handler, command_handlers
 from error_decorator import input_error
 from file_storage import load_data, save_data
@@ -17,9 +17,9 @@ def parse_command(input_sting: str):
 
 def main():
     try:
-        books = load_data()
+        assistant = load_data()
     except FileNotFoundError as e:
-        books = Books()
+        assistant = Assistant()
 
     print(hello_handler())
     print(help_handler())
@@ -31,12 +31,12 @@ def main():
                 print(format_success('Good bye!'))
                 break
 
-            print(command_handlers(command, books, *arguments))
+            print(command_handlers(command, assistant, *arguments))
 
     except KeyboardInterrupt:
         print(format_success('\nGood bye!'))
     finally:
-        save_data(books)
+        save_data(assistant)
 
 
 if __name__ == '__main__':

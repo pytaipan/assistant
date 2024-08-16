@@ -1,12 +1,12 @@
 from colorama import Fore, Back, Style
-from books.address_book import AddressBook, Record
-from books.notebook import Notebook
+from assistant.address_book import AddressBook, Record
+from assistant.notebook import Notebook
 from error_decorator import input_error
 from output_formatter import format_success, format_error
 
 
 @input_error
-def command_handlers(command, books, *arguments):
+def command_handlers(command, assistant, *arguments):
     no_args_handlers_map = {
         'hello': hello_handler,
         'help': help_handler,
@@ -33,10 +33,10 @@ def command_handlers(command, books, *arguments):
         return no_args_handlers_map[command]()
 
     if command in contact_handlers_map:
-        return contact_handlers_map[command](books.address_book, *arguments)
+        return contact_handlers_map[command](assistant.address_book, *arguments)
 
     if command in notes_handlers_map:
-        return notes_handlers_map[command](books.notebook, *arguments)
+        return notes_handlers_map[command](assistant.notebook, *arguments)
 
     raise KeyError(f'Command {command} was not found')
 
