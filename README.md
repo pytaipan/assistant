@@ -1,40 +1,42 @@
-# Фінальний проект курсу Python Programming: Foundations and Best Practices 2.0
+# Address Book Bot
+## Description
+This bot is designed for managing contacts and birthdays in an address book. It supports a set of commands for creating, modifying, and viewing contacts and birthdays.
 
-## Технiчний опис завдання
+## Installation
+1.Ensure you have Python 3.6 or higher installed.
+2.Install the necessary dependencies if any (e.g., if using prompt_toolkit):
 
-Персональний помічник повинен вміти:
-1. Зберігати контакти з іменами, адресами, номерами телефонів, email та днями народження до книги контактів;
-2. Виводити список контактів, у яких день народження через задану кількість днів від поточної дати;
-3. Перевіряти правильність введеного номера телефону та email під час створення або редагування запису та повідомляти користувача у разі некоректного введення;
-4. Здійснювати пошук контактів серед контактів книги;
-5. Редагувати та видаляти записи з книги контактів;
-6. Зберігати нотатки з текстовою інформацією;
-7. Проводити пошук за нотатками;
-8. Редагувати та видаляти нотатки;
+pip install prompt_toolkit
 
-## Чек-ліст виконання проєкту (основні вимоги)
+## Running the Bot
+To run the bot, use the following command:
+python main.py
 
-### Зберігання та управління контактами	
-- [ ] Додавання нових контактів із іменами, адресами, номерами телефонів, електронною поштою та днями народження
-- [ ] Пошук контактів за різними критеріями (наприклад, за іменем)
-- [ ] Редагування та видалення контактів
-- [ ] Виведення списку контактів, у яких день народження через задану кількість днів від поточної дати
-- [ ] Валідація номера телефону та електронної пошти під час додавання або редагування контакту
-### Зберігання та управління нотатками	
-- [ ] Можливість додавання текстових нотаток
-- [ ] Пошук, редагування та видалення нотаток
-### Зберігання даних	
-- [ ] Всі дані (контакти, нотатки) повинні зберігатися на жорсткому диску у папці користувача
-- [ ] Помічник може бути перезапущений без втрати даних
+## Commands
+Here is a list of available commands and their descriptions:
 
-## Додаткові вимоги
+- help: Prints a list of available commands.
+- hello: Prints a greeting message.
+- add [name] [phone number]: Creates a new contact with the specified phone number.
+- change [name] [phone number]: Changes the phone number of an existing contact.
+- phone [name]: Prints the phone number of the specified contact.
+- all: Prints all contacts.
+- add-birthday [name] [birthday]: Adds a birthday to the specified contact.
+- show-birthday [name]: Prints the birthday of the specified contact.
+- birthdays: Prints all birthdays.
+- close or exit: Terminates the program.
 
-Ви також можете розширити/змінити функціонал проєкту на свій розсуд. Ми пропонуємо додаткове ускладнене завдання, для тих хто реалізує основний функціонал.
-Додаткове завдання не обов’язкове, його можна виконувати за власним бажанням. 
-*Зверніть увагу на те, що ви можете отримати 15 балів за реалізацію додаткового функціоналу, описаного нижче в Чек-листі виконання проєкту (додаткові вимоги)*
-
-Персональний помічник повинен додатково вміти:
-- [ ] Додавання "тегів" до нотаток
-- [ ] Пошук та сортування нотаток за "тегами"
-- [ ] Помічник повинен вгадувати, що хоче від нього користувач, на основі введеного тексту та пропонувати найближчу команду для виконання
-
+## Usage Examples
+- To add a new contact:
+>> add John 123-456-7890
+- To change a contact's phone number:
+>> change John 987-654-3210
+- To view a contact's phone number:
+>> phone John
+- To add a birthday to a contact:
+>> add-birthday John 1990-01-01
+- To view a contact's birthday:
+>> show-birthday John
+- To exit the program:
+>> close
+>> exit
