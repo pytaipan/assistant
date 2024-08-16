@@ -15,7 +15,7 @@ setup(
     python_requires=">=3.7, <4",
     entry_points={  # Optional
         "console_scripts": [
-            "taipan-assistant=taipan_assistant.assistant:run",
+            "taipan-assistant=assistant:run",
         ],
     },
     packages=find_packages(),
