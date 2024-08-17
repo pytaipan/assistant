@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "taipan-assistant"
+version = "1.0.7"
+dependencies = [
+    "colorama==0.4.6",
+    "ngram==4.0.3",
+    "prompt_toolkit==3.0.47",
+    "wcwidth==0.2.13",
+]
+requires-python = ">=3.7"
+readme = "README.md"
+
+[project.scripts]
+taipan-assistant = "taipan_assistant.main_cli:main_cli"

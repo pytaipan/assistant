@@ -1,7 +1,8 @@
 from collections import UserDict
 from typing import List
-from record.note import Note
-from search.engine import Engine
+
+from ..contacts.record.note import Note
+from ..search.engine import Engine
 
 
 class Notebook(UserDict):

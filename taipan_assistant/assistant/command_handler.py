@@ -1,8 +1,9 @@
 from colorama import Fore, Back, Style
-from assistant.address_book import AddressBook, Record
-from assistant.notebook import Notebook
-from error_decorator import input_error
-from output_formatter import format_success, format_error
+from taipan_assistant.assistant.error_decorator import input_error
+from taipan_assistant.assistant.output_formatter import format_success, format_error
+from taipan_assistant.contacts.address_book import AddressBook
+from taipan_assistant.contacts.record.record import Record
+from taipan_assistant.notebook.notebook import Notebook
 
 
 @input_error

@@ -1,8 +1,8 @@
-from record.address import Address
-from record.birthday import Birthday
-from record.email import Email
-from record.name import Name
-from record.phone import Phone, PhoneCollection
+from taipan_assistant.contacts.record.address import Address
+from taipan_assistant.contacts.record.birthday import Birthday
+from taipan_assistant.contacts.record.email import Email
+from taipan_assistant.contacts.record.name import Name
+from taipan_assistant.contacts.record.phone import Phone, PhoneCollection
 
 
 class Record:

@@ -1,6 +1,6 @@
 from re import match
 
-from record.field import Field
+from taipan_assistant.contacts.record.field import Field
 
 
 class Email(Field):
