@@ -30,6 +30,7 @@ def command_handlers(command, assistant, *arguments):
         'add-note': add_note_handler,
         'edit-note': edit_note_handler,
         'delete-note': delete_note_handler,
+        'search-note': search_note_handler,
     }
 
     if command in no_args_handlers_map:
@@ -66,6 +67,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-note [text note]{Style.RESET_ALL} - adds a new note and prints it's ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}edit-note [ID] [text note]{Style.RESET_ALL} - updates note with given ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}delete-note [ID]{Style.RESET_ALL} - removes note with given ID
+{Fore.LIGHTWHITE_EX}{Back.BLUE}search-note [text]{Style.RESET_ALL} - searches for notes by search phrase
 {Fore.LIGHTWHITE_EX}{Back.BLUE}close{Style.RESET_ALL} або {Fore.YELLOW}{Back.BLUE}exit{Style.RESET_ALL} - terminates a program
     '''
 
@@ -192,6 +194,14 @@ def delete_note_handler(notes: Notebook, note_id: str, *args):
         return format_success(f'Note #{note_id} deleted')
     except IndexError:
         return format_error('Note not found.')
+
+def search_note_handler(notes: Notebook, phrase: str, *args):
+    notes = notes.find_notes(phrase)
+    return format_success('\n'.join(map(lambda note: f'Note: "{note}"', notes)))
+
+def format_notes_dict(notes):
+    return format_success('\n'.join(map(lambda note_id: f'ID[{note_id}] Note: "{notes[note_id]}"', notes.keys())))
+
 
 def parser_bool_from_str(val: str) -> bool:
     return val.lower() == 'true'
