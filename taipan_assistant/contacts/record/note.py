@@ -1,4 +1,5 @@
-from record.tag import Tag
+from taipan_assistant.contacts.record.tag import Tag
+
 
 class Note:
     def __init__(self, text: str):

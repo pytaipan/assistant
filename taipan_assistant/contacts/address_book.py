@@ -1,10 +1,9 @@
-import operator
 from collections import UserDict
 from datetime import datetime
 
-from record.birthday import Birthday
-from record.record import Record
-from search.engine import Engine
+from .record.birthday import Birthday
+from .record.record import Record
+from ..search.engine import Engine
 
 
 class AddressBook(UserDict):

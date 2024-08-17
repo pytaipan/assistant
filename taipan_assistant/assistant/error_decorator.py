@@ -1,7 +1,7 @@
 from typing import Callable
 from functools import wraps
 
-from output_formatter import format_error
+from .output_formatter import format_error
 
 
 def input_error(func: Callable):

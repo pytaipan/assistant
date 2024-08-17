@@ -1,5 +1,5 @@
-from assistant.address_book import AddressBook
-from assistant.notebook import Notebook
+from ..contacts.address_book import AddressBook
+from ..notebook.notebook import Notebook
 
 
 class Assistant:
