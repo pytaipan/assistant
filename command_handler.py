@@ -175,18 +175,19 @@ def get_all_birthdays_handler(contacts: AddressBook, *args):
 def get_all_notes_handler(notes: Notebook, *args):
     return format_success('\n'.join(map(lambda note_id: f'ID[{note_id}] Note: "{notes[note_id]}"', notes.keys())))
 
+
 def add_note_handler(notes: Notebook, *args):
     return format_success(f'Note added with ID: {notes.add_note(' '.join(args))}')
 
 
 def edit_note_handler(notes: Notebook, note_id: str, *args):
     try:
-        note = notes.get_note(note_id)
-        note.edit(' '.join(args))
+        notes.edit_note(note_id, ' '.join(args))
     except IndexError:
         return format_error('Note not found.')
 
     return format_success(f'Note #{note_id} updated')
+
 
 def delete_note_handler(notes: Notebook, note_id: str, *args):
     try:
@@ -195,9 +196,11 @@ def delete_note_handler(notes: Notebook, note_id: str, *args):
     except IndexError:
         return format_error('Note not found.')
 
+
 def search_note_handler(notes: Notebook, phrase: str, *args):
     notes = notes.find_notes(phrase)
     return format_success('\n'.join(map(lambda note: f'Note: "{note}"', notes)))
+
 
 def format_notes_dict(notes):
     return format_success('\n'.join(map(lambda note_id: f'ID[{note_id}] Note: "{notes[note_id]}"', notes.keys())))

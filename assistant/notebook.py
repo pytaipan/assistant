@@ -21,6 +21,12 @@ class Notebook(UserDict):
     def get_note(self, key: str) -> Note:
         return self.data[key]
 
+    def edit_note(self, note_id: str, new_text) -> None:
+        note = self.data[note_id]
+        note.edit(new_text)
+
+        self.search.add_to_index(note_id, note)
+
     def delete_note(self, key: str) -> None:
         del self.data[key]
         self.search.remove_from_index(key)
