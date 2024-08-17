@@ -24,6 +24,7 @@ def command_handlers(command, assistant, *arguments):
         'show-birthday': get_birthday_handler,
         'birthdays': get_all_birthdays_handler,
         'search-contacts': search_contacts,
+        'delete-contact': delete_contact,
     }
 
     notes_handlers_map = {
@@ -59,9 +60,10 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}change-email [name] [old_email_value] [new_email_value] [is_primary]{Style.RESET_ALL} - Add or change email in contact, or create new contact with email if not exists
 {Fore.LIGHTWHITE_EX}{Back.BLUE}set-address [name] [address]{Style.RESET_ALL} - set address into contact
 {Fore.LIGHTWHITE_EX}{Back.BLUE}change [name] [phone number]{Style.RESET_ALL} - changes a contact phone number 
+{Fore.LIGHTWHITE_EX}{Back.BLUE}delete-contact [name] {Style.RESET_ALL} - delete contact
 {Fore.LIGHTWHITE_EX}{Back.BLUE}phone [name]{Style.RESET_ALL} - prints contacts phone number
 {Fore.LIGHTWHITE_EX}{Back.BLUE}all{Style.RESET_ALL} - prints all contacts
-{Fore.LIGHTWHITE_EX}{Back.BLUE}search_contacts [search_term]{Style.RESET_ALL} - search contacts by names or phones
+{Fore.LIGHTWHITE_EX}{Back.BLUE}search-contacts [search_term]{Style.RESET_ALL} - search contacts by names or phones
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-birthday [name] [birthday]{Style.RESET_ALL} - adds birthday to a contact
 {Fore.LIGHTWHITE_EX}{Back.BLUE}show-birthday [name]{Style.RESET_ALL} - prints contact's birthday
 {Fore.LIGHTWHITE_EX}{Back.BLUE}birthdays{Style.RESET_ALL} - prints all birthdays
@@ -170,6 +172,14 @@ def search_contacts(contacts: AddressBook, search_term: str) -> str:
     if len(records) == 0:
         return format_error('Contacts not found.')
     return __records_to_str(records)
+
+
+def delete_contact(contacts: AddressBook, name: str) -> str:
+    try:
+        contacts.delete(name)
+        return format_success('Contact deleted.')
+    except ValueError as error:
+        return format_error(error)
 
 
 def get_birthday_handler(contacts: AddressBook, name: str, *args):

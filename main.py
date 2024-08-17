@@ -24,8 +24,9 @@ def main():
     print(help_handler())
 
     # Предполагаемый список доступных команд
-    commands = ['help', 'hello', 'add', 'change', 'phone', 'all', 'add-birthday', 'show-birsthday', 'birthdays',
-                'notes', 'add-note', 'edit-note', 'delete-note', 'search-note', 'close', 'exit', 'search-contacts']
+    commands = ['help', 'hello', 'add', 'change', 'phone', 'all', 'delete-contact', 'add-birthday', 'show-birsthday',
+                'birthdays', 'notes', 'add-note', 'edit-note', 'delete-note', 'search-note', 'close', 'exit',
+                'search-contacts']
 
     # Создание объекта WordCompleter с доступными командами
     command_completer = WordCompleter(commands, ignore_case=True)
@@ -45,6 +46,7 @@ def main():
         print(format_success('\nGood bye!'))
     finally:
         save_data(assistant)
+
 
 if __name__ == '__main__':
     main()
