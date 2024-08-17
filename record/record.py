@@ -2,13 +2,13 @@ from record.address import Address
 from record.birthday import Birthday
 from record.email import Email
 from record.name import Name
-from record.phone import Phone
+from record.phone import Phone, PhoneCollection
 
 
 class Record:
     def __init__(self, name):
         self.name = Name(name)
-        self.phones = []
+        self.phones = PhoneCollection()
         self.birthday = None
         self.emails = []
         self.address = None

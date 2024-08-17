@@ -23,6 +23,7 @@ def command_handlers(command, assistant, *arguments):
         'add-birthday': add_birthday_handler,
         'show-birthday': get_birthday_handler,
         'birthdays': get_all_birthdays_handler,
+        'search-contacts': search_contacts,
     }
 
     notes_handlers_map = {
@@ -60,6 +61,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}change [name] [phone number]{Style.RESET_ALL} - changes a contact phone number 
 {Fore.LIGHTWHITE_EX}{Back.BLUE}phone [name]{Style.RESET_ALL} - prints contacts phone number
 {Fore.LIGHTWHITE_EX}{Back.BLUE}all{Style.RESET_ALL} - prints all contacts
+{Fore.LIGHTWHITE_EX}{Back.BLUE}search_contacts [search_term]{Style.RESET_ALL} - search contacts by names or phones
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-birthday [name] [birthday]{Style.RESET_ALL} - adds birthday to a contact
 {Fore.LIGHTWHITE_EX}{Back.BLUE}show-birthday [name]{Style.RESET_ALL} - prints contact's birthday
 {Fore.LIGHTWHITE_EX}{Back.BLUE}birthdays{Style.RESET_ALL} - prints all birthdays
@@ -77,7 +79,7 @@ def add_contact_handler(contacts: AddressBook, name: str, phone: str):
     name = name.lower().capitalize()
 
     try:
-        record = contacts.find(name)
+        record = contacts.find_by_name(name)
     except ValueError:
         record = Record(name)
 
@@ -92,7 +94,7 @@ def add_email_handler(contacts: AddressBook, name: str, email: str, is_primary: 
     name = name.lower().capitalize()
     primary = parser_bool_from_str(is_primary)
 
-    record = contacts.find(name)
+    record = contacts.find_by_name(name)
     if record is None:
         record = Record(name)
 
@@ -106,8 +108,9 @@ def add_email_handler(contacts: AddressBook, name: str, email: str, is_primary: 
 def change_phone_handler(contacts: AddressBook, name: str, phone: str):
     name = name.lower().capitalize()
     try:
-        record = contacts.find(name)
+        record = contacts.find_by_name(name)
         record.edit_phone(record.phones[0], phone)
+        contacts[name] = record
 
         return format_success('Contact updated.')
     except ValueError:
@@ -120,8 +123,9 @@ def change_email_handler(contacts: AddressBook, name: str, old_email: str, new_e
     primary = parser_bool_from_str(is_primary)
 
     try:
-        record = contacts.find(name)
+        record = contacts.find_by_name(name)
         record.change_email(old_email, new_email, primary)
+        contacts[name] = record
 
         return format_success('Email updated.')
     except ValueError as error:
@@ -131,7 +135,7 @@ def change_email_handler(contacts: AddressBook, name: str, old_email: str, new_e
 @input_error
 def set_address(contacts: AddressBook, name: str, *args):
     try:
-        record = contacts.find(name)
+        record = contacts.find_by_name(name)
         record.set_address(' '.join(args))
 
         return format_success('The address is set.')
@@ -142,7 +146,7 @@ def set_address(contacts: AddressBook, name: str, *args):
 @input_error
 def get_contact_handler(contacts: AddressBook, name: str, *args):
     try:
-        return contacts.find(name.lower().capitalize())
+        return contacts.find_by_name(name.lower().capitalize())
     except ValueError:
         return format_error('Contact not found.')
 
@@ -150,20 +154,27 @@ def get_contact_handler(contacts: AddressBook, name: str, *args):
 def get_all_contacts_handler(contacts: AddressBook, *args):
     if len(contacts) == 0:
         return format_error('AddressBook is empty.')
-    return '\n'.join(map(lambda name: f'{name}: {contacts[name]}', contacts.keys()))
+    return __records_to_str(contacts.values())
 
 
 def add_birthday_handler(contacts: AddressBook, name: str, birthday: str):
     try:
-        contacts.find(name.lower().capitalize()).add_birthday(birthday)
+        contacts.find_by_name(name.lower().capitalize()).add_birthday(birthday)
         return format_success('Contact updated.')
     except ValueError as error:
         return format_error(error)
 
 
+def search_contacts(contacts: AddressBook, search_term: str) -> str:
+    records = contacts.search(search_term)
+    if len(records) == 0:
+        return format_error('Contacts not found.')
+    return __records_to_str(records)
+
+
 def get_birthday_handler(contacts: AddressBook, name: str, *args):
     try:
-        return contacts.find(name.lower().capitalize()).birthday
+        return contacts.find_by_name(name.lower().capitalize()).birthday
     except ValueError:
         return format_error('Contact not found.')
 
@@ -208,3 +219,7 @@ def format_notes_dict(notes):
 
 def parser_bool_from_str(val: str) -> bool:
     return val.lower() == 'true'
+
+
+def __records_to_str(records: iter) -> str:
+    return '\n'.join(map(lambda record: f'{record.name}: {record}', records))

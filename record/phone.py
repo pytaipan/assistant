@@ -1,5 +1,5 @@
+from collections import UserList
 from re import match
-
 from record.field import Field
 
 
@@ -10,3 +10,11 @@ class Phone(Field):
             raise ValueError('Phone number must be 10 digits')
 
         super().__init__(value=value)
+
+
+class PhoneCollection(UserList):
+    def __init__(self):
+        super().__init__()
+
+    def __str__(self):
+        return ' '.join(list(map(str, self.data)))
