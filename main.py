@@ -26,7 +26,8 @@ def main():
     # Предполагаемый список доступных команд
     commands = ['help', 'hello', 'add', 'change', 'phone', 'all', 'delete-contact', 'add-birthday', 'show-birsthday',
                 'birthdays', 'notes', 'add-note', 'edit-note', 'delete-note', 'search-note', 'close', 'exit',
-                'search-contacts']
+                'search-contacts', 'upcoming-birthdays']
+
 
     # Создание объекта WordCompleter с доступными командами
     command_completer = WordCompleter(commands, ignore_case=True)
