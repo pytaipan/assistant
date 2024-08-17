@@ -23,6 +23,7 @@ def command_handlers(command, assistant, *arguments):
         'add-birthday': add_birthday_handler,
         'show-birthday': get_birthday_handler,
         'birthdays': get_all_birthdays_handler,
+        'upcoming-birthdays': get_upcoming_birthdays,
         'search-contacts': search_contacts,
         'delete-contact': delete_contact,
     }
@@ -67,6 +68,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-birthday [name] [birthday]{Style.RESET_ALL} - adds birthday to a contact
 {Fore.LIGHTWHITE_EX}{Back.BLUE}show-birthday [name]{Style.RESET_ALL} - prints contact's birthday
 {Fore.LIGHTWHITE_EX}{Back.BLUE}birthdays{Style.RESET_ALL} - prints all birthdays
+{Fore.LIGHTWHITE_EX}{Back.BLUE}upcoming-birthdays [number of days from today]{Style.RESET_ALL} - search for contacts on their birthday within a specified number of days from today
 {Fore.LIGHTWHITE_EX}{Back.BLUE}notes{Style.RESET_ALL} - prints all notes
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-note [text note]{Style.RESET_ALL} - adds a new note and prints it's ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}edit-note [ID] [text note]{Style.RESET_ALL} - updates note with given ID
@@ -187,6 +189,13 @@ def get_birthday_handler(contacts: AddressBook, name: str, *args):
         return contacts.find_by_name(name.lower().capitalize()).birthday
     except ValueError:
         return format_error('Contact not found.')
+
+
+def get_upcoming_birthdays(contacts: AddressBook, coming_days: str):
+    records = contacts.get_upcoming_birthdays(int(coming_days))
+    if len(records) == 0:
+        return format_error('Contacts not found.')
+    return __records_to_str(records)
 
 
 def get_all_birthdays_handler(contacts: AddressBook, *args):
