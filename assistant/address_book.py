@@ -33,8 +33,8 @@ class AddressBook(UserDict):
         if name not in self.data.keys():
             raise ValueError('Record not found')
 
-        self.data.pop(name)
-        self.search_engine.remove_from_index(name)
+        record = self.data.pop(name)
+        self.search_engine.remove_from_index(record.name)
 
     def __add_record_to_index(self, record: Record):
         self.search_engine.add_to_index(record.name, record)
