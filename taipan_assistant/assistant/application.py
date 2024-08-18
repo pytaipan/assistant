@@ -21,6 +21,9 @@ class Application:
             pickle.dump(data_dict, f)
 
     def __parse_command(self, input_sting: str):
+        if input_sting == "":
+            return "help",
+
         command, *arguments = input_sting.split()
 
         return command, *arguments
