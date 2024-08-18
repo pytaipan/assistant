@@ -5,7 +5,7 @@ This bot is designed for managing contacts and birthdays in an address book. It 
 ## Installation
 1.Ensure you have Python 3.6 or higher installed.
 
-`pip install pip install taipan-assistant==1.0.7`
+`pip install pip install taipan-assistant==1.0.8`
 
 ## Running the Bot
 To run the bot, use the following command:
