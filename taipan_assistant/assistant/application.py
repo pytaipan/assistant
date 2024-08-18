@@ -5,7 +5,7 @@ from prompt_toolkit.completion import WordCompleter
 
 from .assistant import Assistant
 from .command_handler import command_handlers, hello_handler, help_handler
-from .output_formatter import format_success
+from taipan_assistant.command.output_formatter import format_success
 
 
 class Application:
@@ -32,16 +32,9 @@ class Application:
             assistant = Assistant()
 
         print(hello_handler())
-        print(help_handler())
+        print(assistant.help())
 
-        # Предполагаемый список доступных команд
-        commands = ['help', 'hello', 'add', 'change', 'phone', 'all', 'delete-contact', 'add-birthday', 'show-birsthday',
-                    'birthdays', 'notes', 'add-note', 'edit-note', 'delete-note', 'search-note', 'close', 'exit',
-                    'search-contacts', 'upcoming-birthdays']
-
-
-        # Создание объекта WordCompleter с доступными командами
-        command_completer = WordCompleter(commands, ignore_case=True)
+        command_completer = WordCompleter(assistant.commands(), ignore_case=True)
 
         try:
             while True:
@@ -52,8 +45,7 @@ class Application:
                     print(format_success('Good bye!'))
                     break
 
-                print(command_handlers(command, assistant, *arguments))
-
+                print(assistant(command, *arguments))
         except KeyboardInterrupt:
             print(format_success('\nGood bye!'))
         finally:

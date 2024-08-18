@@ -39,7 +39,6 @@ class AddressBook(UserDict):
         record = self.data.pop(name)
         self.search_engine.remove_from_index(record.name)
 
-
     def get_upcoming_birthdays(self, coming_days: int) -> list:
         """Find users who have a birthday in the next coming_days days"""
 

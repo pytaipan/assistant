@@ -9,3 +9,9 @@ class Command:
 
     def __call__(self, *args, **kwargs):
         return self.__handler(*args, **kwargs)
+
+    def supports(self, command: str) -> bool:
+        return command == self.name
+
+    def help(self, ns: str) -> str:
+        return f"{ns} {self.name} - {self.description}"
