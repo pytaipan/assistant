@@ -35,6 +35,8 @@ def command_handlers(command, assistant, *arguments):
         'edit-note': edit_note_handler,
         'delete-note': delete_note_handler,
         'search-note': search_note_handler,
+        'add-note-tag': add_tag_to_note_handler,
+        'notes-by-tags': sort_notes_by_tags,
     }
 
     if command in no_args_handlers_map:
@@ -71,10 +73,12 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}birthdays{Style.RESET_ALL} - prints all birthdays
 {Fore.LIGHTWHITE_EX}{Back.BLUE}upcoming-birthdays [number of days from today]{Style.RESET_ALL} - search for contacts on their birthday within a specified number of days from today
 {Fore.LIGHTWHITE_EX}{Back.BLUE}notes{Style.RESET_ALL} - prints all notes
+{Fore.LIGHTWHITE_EX}{Back.BLUE}notes-by-tags{Style.RESET_ALL} - prints all notes sorted by tags
 {Fore.LIGHTWHITE_EX}{Back.BLUE}add-note [text note]{Style.RESET_ALL} - adds a new note and prints it's ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}edit-note [ID] [text note]{Style.RESET_ALL} - updates note with given ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}delete-note [ID]{Style.RESET_ALL} - removes note with given ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}search-note [text]{Style.RESET_ALL} - searches for notes by search phrase
+{Fore.LIGHTWHITE_EX}{Back.BLUE}add-note-tag [ID] [tag]{Style.RESET_ALL} - adds a tag to a note
 {Fore.LIGHTWHITE_EX}{Back.BLUE}close{Style.RESET_ALL} або {Fore.YELLOW}{Back.BLUE}exit{Style.RESET_ALL} - terminates a program
     '''
 
@@ -204,11 +208,11 @@ def get_all_birthdays_handler(contacts: AddressBook, *args):
 
 
 def get_all_notes_handler(notes: Notebook, *args):
-    return format_success('\n'.join(map(lambda note_id: f'ID[{note_id}] Note: "{notes[note_id]}"', notes.keys())))
+    return format_success('\n\n\n'.join(map(lambda note_id: f'Note[{note_id}]\n{notes[note_id]}', notes.keys())))
 
 
-def add_note_handler(notes: Notebook, *args):
-    return format_success(f'Note added with ID: {notes.add_note(' '.join(args))}')
+def add_note_handler(notes: Notebook, title: str, *args):
+    return format_success(f'Note added with ID: {notes.add_note(title, ' '.join(args))}')
 
 
 def edit_note_handler(notes: Notebook, note_id: str, *args):
@@ -231,6 +235,23 @@ def delete_note_handler(notes: Notebook, note_id: str, *args):
 def search_note_handler(notes: Notebook, phrase: str, *args):
     notes = notes.find_notes(phrase)
     return format_success('\n'.join(map(lambda note: f'Note: "{note}"', notes)))
+
+def add_tag_to_note_handler(notes: Notebook, note_id: str, tag: str, *args):
+    try:
+        notes.add_tag(note_id, tag)
+        return format_success(f'Note #{note_id} updated')
+    except IndexError:
+        return format_error('Note not found.')
+
+def sort_notes_by_tags(notes: Notebook, *args):
+    return_text = ''
+    for tag, notes in notes.sort_notes_by_tags().items():
+        return_text += format_success(f'Tag: "{tag}", Notes:\n')
+        for note_id, note in notes.items():
+            return_text += format_success(f'Note[{note_id}]\n{note}')
+        return_text += format_success(f'\n{'='*10}\n')
+
+    return return_text
 
 
 def format_notes_dict(notes):

@@ -39,8 +39,8 @@ class Application:
 
         # Предполагаемый список доступных команд
         commands = ['help', 'hello', 'add', 'change', 'phone', 'all', 'delete-contact', 'add-birthday', 'show-birsthday',
-                    'birthdays', 'notes', 'add-note', 'edit-note', 'delete-note', 'search-note', 'close', 'exit',
-                    'search-contacts', 'upcoming-birthdays']
+                    'birthdays', 'notes', 'add-note', 'edit-note', 'delete-note', 'search-note', 'add-note-tag', 'notes-by-tags',
+                    'close', 'exit', 'search-contacts', 'upcoming-birthdays']
 
 
         # Создание объекта WordCompleter с доступными командами
