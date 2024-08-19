@@ -265,4 +265,4 @@ def parser_bool_from_str(val: str) -> bool:
 
 
 def __records_to_str(records: iter) -> str:
-    return '\n'.join(map(lambda record: f'{record.name}: {record}', records))
+    return '\n'.join(map(lambda record: f'{record}', records))
