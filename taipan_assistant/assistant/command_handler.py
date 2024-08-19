@@ -74,7 +74,7 @@ def help_handler():
 {Fore.LIGHTWHITE_EX}{Back.BLUE}upcoming-birthdays [number of days from today]{Style.RESET_ALL} - search for contacts on their birthday within a specified number of days from today
 {Fore.LIGHTWHITE_EX}{Back.BLUE}notes{Style.RESET_ALL} - prints all notes
 {Fore.LIGHTWHITE_EX}{Back.BLUE}notes-by-tags{Style.RESET_ALL} - prints all notes sorted by tags
-{Fore.LIGHTWHITE_EX}{Back.BLUE}add-note [text note]{Style.RESET_ALL} - adds a new note and prints it's ID
+{Fore.LIGHTWHITE_EX}{Back.BLUE}add-note [title] [text note]{Style.RESET_ALL} - adds a new note and prints it's ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}edit-note [ID] [text note]{Style.RESET_ALL} - updates note with given ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}delete-note [ID]{Style.RESET_ALL} - removes note with given ID
 {Fore.LIGHTWHITE_EX}{Back.BLUE}search-note [text]{Style.RESET_ALL} - searches for notes by search phrase
@@ -211,13 +211,13 @@ def get_all_notes_handler(notes: Notebook, *args):
     return format_success('\n\n\n'.join(map(lambda note_id: f'Note[{note_id}]\n{notes[note_id]}', notes.keys())))
 
 
-def add_note_handler(notes: Notebook, title: str, *args):
-    return format_success(f'Note added with ID: {notes.add_note(title, ' '.join(args))}')
+def add_note_handler(notes: Notebook, title: str, text: str, *args):
+    return format_success(f'Note added with ID: {notes.add_note(title, text)}')
 
 
-def edit_note_handler(notes: Notebook, note_id: str, *args):
+def edit_note_handler(notes: Notebook, note_id: str, text: str, *args):
     try:
-        notes.edit_note(note_id, ' '.join(args))
+        notes.edit_note(note_id, text)
     except IndexError:
         return format_error('Note not found.')
 
@@ -236,12 +236,14 @@ def search_note_handler(notes: Notebook, phrase: str, *args):
     notes = notes.find_notes(phrase)
     return format_success('\n'.join(map(lambda note: f'Note: "{note}"', notes)))
 
+
 def add_tag_to_note_handler(notes: Notebook, note_id: str, tag: str, *args):
     try:
         notes.add_tag(note_id, tag)
         return format_success(f'Note #{note_id} updated')
     except IndexError:
         return format_error('Note not found.')
+
 
 def sort_notes_by_tags(notes: Notebook, *args):
     return_text = ''

@@ -24,7 +24,36 @@ class Application:
         if input_sting == "":
             return "help",
 
-        command, *arguments = input_sting.split()
+        args = []
+        arg = ""
+        open_char = None
+
+        for char in input_sting:
+            if arg == "":
+                if char in ["'", '"', ' '] and open_char is None:
+                    open_char = char
+                    continue
+
+                if open_char is None:
+                    open_char = " "
+
+                arg += char
+                continue
+
+            if char == open_char:
+                args.append(arg)
+                open_char = None
+                arg = ""
+                continue
+
+            arg += char
+
+        if arg != "":
+            args.append(arg)
+
+        command, *arguments = args
+
+        print(args)
 
         return command, *arguments
 

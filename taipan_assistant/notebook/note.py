@@ -24,11 +24,12 @@ class Note:
 
     def __str__(self) -> str:
         return f'''{'-' * 10}
-{self.title}
+Title: \n{self.title}
 {'-' * 10}
-{self.text}
+Text: \n{self.text}
 {'-' * 10}
-Tags: {', '.join(map(lambda tag: str(tag), self.tags))}
+Tags: \n{', '.join(map(lambda tag: str(tag), self.tags))}
 {'-' * 10}
+Last changed:
 {self.updated_at.strftime("%Y-%m-%d %H:%M:%S")}
 '''
