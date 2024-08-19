@@ -1,4 +1,5 @@
 from re import match
+from colorama import Fore, Back, Style
 
 from taipan_assistant.contacts.record.field import Field
 
@@ -15,4 +16,7 @@ class Email(Field):
         super().__init__(value=value)
 
     def __str__(self):
-        return f'{{value: {super().__str__()}, primary:{self.primary} }}'
+        if self.primary:
+            return f'{Fore.LIGHTWHITE_EX}{Back.GREEN}{super().__str__()}{Style.RESET_ALL}'
+
+        return f'{super().__str__()}'

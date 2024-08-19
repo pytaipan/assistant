@@ -53,8 +53,6 @@ class Application:
 
         command, *arguments = args
 
-        print(args)
-
         return command, *arguments
 
     def run(self):
