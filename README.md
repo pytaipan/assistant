@@ -5,12 +5,17 @@ This bot is designed for managing contacts and birthdays in an address book. It 
 ## Installation
 1.Ensure you have Python 3.6 or higher installed.
 
-`pip install pip install taipan-assistant==1.0.8`
+`pip install taipan-assistant==1.0.8`
 
-## Running the Bot
+## Install and run the Bot
 To run the bot, use the following command:
 
 `taipan-assistant`
+
+## How to run as local package
+`python -m pip install -e .` - run it in the root of the repository. You should see folder `taipan_assistant-*` in the .venv/lib/python3.*/site-packages and a `taipan-assistant` in a .venv/bin directory
+
+`taipan-assistant` - run as a binary name.
 
 ## Commands
 Here is a list of available commands and their descriptions:
