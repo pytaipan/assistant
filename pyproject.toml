@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "taipan-assistant"
-version = "1.0.9"
+version = "1.0.10"
 dependencies = [
     "colorama==0.4.6",
     "ngram==4.0.3",
